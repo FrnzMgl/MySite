@@ -1,10 +1,11 @@
 
 
     <?php
-    if (isset($_GET["hello"])) {
-        echo "wrong password";
-
-    }
+    if (isset($_SESSION["username"])) {
+      header("Location: dashboard.php");
+      exit();
+  }
+   
 
 ?>
 <!DOCTYPE html>

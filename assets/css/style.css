@@ -2,3 +2,13 @@ body{
 
     margin-top: 10%;
 }
+#profile{
+
+    border: px black solid;
+}
+#edit-profile{color: blue;
+   position: relative;
+    width: 25%;
+    margin-top: -100px;
+   border: 2px black solid;
+}
