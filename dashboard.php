@@ -12,6 +12,9 @@ if (isset($_POST["submit"])) {
 
     session_destroy();
 }
+
+
+   
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +37,22 @@ if (isset($_POST["submit"])) {
 
 
     <div>
+<?php       
+$query = 'SELECT * FROM users WHERE username = "' . $_SESSION["username"] . '"';
+$result = $conn->query($query);
 
+if ($result === false) {
+    echo "Error executing the query: " . $conn->error;
+}        
+        $row = $result->fetch_assoc();
+         echo "Username: " . $row['username'] . "<br>";
+        echo "Email: " . $row['email'] . "<br>";
+
+
+
+$conn->close();
+
+?>
 
     </div>
 </body>
