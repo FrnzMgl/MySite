@@ -1,24 +1,20 @@
 <?php
 include("db.php");
 
-// Check if username exists and set a flag
-$usernameExists = isset($_GET['username_exists']);
-
-if ($usernameExists) {
-    echo '<script type="text/javascript">alert("Username already exists. Please choose a different username.");</script>';
-}
-?>
-
-<?php
-$errors = array();
-
+// Check if the form has been submitted
 if (isset($_POST['submit'])) {
+
+    // Get the form data
     $username = $_POST['username'];
+    $firstName = trim($_POST['firstName']);
+    $lastName = trim($_POST['lastName']);
+    $email = trim($_POST['email']);
+    $mobileNumber = trim($_POST['mobileNumber']);
     $password = $_POST['password'];
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
-    $email = $_POST['email'];
-    $number = $_POST['number'];
+    $confirmPassword = $_POST['confirmPassword'];
+
+    // Initialize empty array for errors
+    $errors = [];
 
     $sql_check_username = "SELECT * FROM users WHERE username='$username'";
     $result_check_username = $conn->query($sql_check_username);
@@ -28,27 +24,59 @@ if (isset($_POST['submit'])) {
         $errors[] = "Username already exists. Please choose a different username.";
     }
 
+    // Validate first name
+    if (!preg_match("/^[a-zA-Z]+$/", $firstName)) {
+        $errors[] = "First name must contain only letters.";
+    }
+
+    // Validate last name
+    if (!preg_match("/^[a-zA-Z]+$/", $lastName)) {
+        $errors[] = "Last name must contain only letters.";
+    }
+
+   // Validate mobile number (allowing 11 digits)
+    if (!preg_match("/^(0)[0-9]{10}$/", $mobileNumber)) {
+    $errors[] = "Mobile number must start with 0 and be 11 digits long.";
+    }
+
+
+    // Validate email
     if (strlen($email) > 50) {
-        $errors[] = "Email character count should not exceed 50.";
+        $errors[] = "Email must not exceed 50 characters.";
+    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Invalid email format.";
     }
 
-    if ($number[0] !== "0") {
-        $errors[] = "Number should start with '0'.";
+    // Validate password matching
+    if ($password !== $confirmPassword) {
+        $errors[] = "Passwords do not match.";
     }
 
-    if (empty($errors)) {
-        // If there are no errors, proceed with registration
-        $query = "INSERT INTO `users` (`username`, `password`, `first_name`, `last_name`, `email`, `number`,`profilepic`) VALUES ('$username','$password','$firstname','$lastname','$email','$number','default.svg');";
+    // If there are errors, display them
+    if (!empty($errors)) {
+        echo '<div class="alert alert-danger">';
+        foreach ($errors as $error) {
+            echo "<p>$error</p>";
+        }
+        echo '</div>';
+    } else {
+        // Registration successful (replace with your actual registration logic)
+        echo "Registration successful!";
+        $query = "INSERT INTO `users` (`username`, `password`, `first_name`, `last_name`, `email`, `number`,`proflepic`) VALUES ('$username','$password','$firstName','$lastName','$email','$mobileNumber','default.svg');";
 
         if (mysqli_query($conn, $query)) {
             header('location: index.php');
             exit();
         } else {
-            echo "Error: " . mysqli_error($conn);
+        
         }
     }
 }
 ?>
+
+<!-- Rest of your HTML code remains unchanged -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,7 +92,7 @@ if (isset($_POST['submit'])) {
     <div class="row justify-content-center">
       <div class="col-md-6">
         <h1 class="mt-5 mb-3">Register</h1>
-        <form>
+        <form action="register.php" method="post">
           <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
@@ -93,7 +121,7 @@ if (isset($_POST['submit'])) {
             <label for="mobileNumber">Mobile Number:</label>
             <input type="tel" class="form-control" id="mobileNumber" name="mobileNumber" placeholder="Enter mobile number" required>
           </div>
-          <button type="submit" class="btn btn-primary mt-3">Register</button>
+          <button  name="submit"class="btn btn-primary mt-3">Register</button>
         </form>
       </div>
     </div>
