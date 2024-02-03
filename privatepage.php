@@ -1,3 +1,16 @@
+<?php
+
+
+session_start();
+include 'db.php';
+// Check if user is logged in
+if (!isset($_SESSION["username"])) {
+    header("Location: index.php");
+    exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,17 +31,9 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="dashboard.php">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Gallery</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#contact">Contact Us</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="loginui.php">Sign In</a>
-          </li>
+
         </ul>
       </div>
     </div>
@@ -36,7 +41,7 @@
   </nav>
 
   <div class="container mt-5">
-    <h1>Welcome to My public page!</h1>
+    <h1>Welcome to My private page!</h1>
     <p>
 In the forgotten city of Aerilon, bathed in the perpetual twilight of a gas giant's shadow, lived a peculiar tinkerer named Anya. Unlike the stoic clockwork engineers who dominated Aerilon, Anya embraced the whimsical. Her workshop, crammed with mismatched gears and glowing vials, hummed with the music of sprockets and the clang of invention. Her latest creation, perched precariously on a workbench, resembled a cross between a hummingbird and a music box. Its wings, crafted from iridescent beetle elytra, twitched in anticipation.
 
@@ -66,30 +71,6 @@ Elara stood silent, the hummingbird's song swirling around them. A flicker of so
 From that day on, the mechanical hummingbird became a symbol of hope in Aerilon. Its whimsical song, a defiance against the cold logic of the clockwork world, reminded everyone that beauty could bloom even in the most unexpected places. And Anya, the whimsical tinkerer, continued to dream and create, her workshop a beacon of imagination in the perpetual twilight.</p>
   </div>
   
-  <div id="contact" class="container">
-    <h1 class="text-center mt-5">Contact Us</h1>
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <form id="contact-form">
-          <div class="mb-3">
-            <label for="name" class="form-label">Your Name</label>
-            <input type="text" class="form-control" id="name" aria-describedby="nameHelp">
-            <small id="nameHelp" class="form-text text-muted">We'll never share your name with anyone else.</small>
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Your Email</label>
-            <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-          </div>
-          <div class="mb-3">
-            <label for="message" class="form-label">Message</label>
-            <textarea class="form-control" id="message" rows="5"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Send Message</button>
-        </form>
-      </div>
-    </div>
-  </div>
 
   <script src="assets/js/jquery-3.6.0.min.js"></script>
   <script src="assets/js/bootstrap.bundle.min.js"></script>
